@@ -1,4 +1,5 @@
 library(dplyr)
+library(tidyr)
 
 ## Read actvity labels
 actlabelText<-
@@ -60,8 +61,16 @@ names(xtraind) <- valid_column_names
 xtraind <- select(xtraind, contains("mean",ignore.case = TRUE), contains("std", ignore.case=TRUE) , ActivityLabel, ActivityId, Subject)
 
 
-//Final Tidy data
-tidydata<-rbind(xtestd,xtraind)
+##Combined data
+combinedd<-rbind(xtestd,xtraind)
+
+##Tidy data
+tidydata<-gather(combinedd, ObservationType, observationValue, 1:86)
+
+
+#Write tidy data out to file system
+write.table(tidydata,file="./data/tidydata.txt",sep="\t", row.names = FALSE)
+
 
 
 
